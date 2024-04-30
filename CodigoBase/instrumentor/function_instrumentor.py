@@ -51,7 +51,20 @@ class FunctionInstrumentor(NodeTransformer):
                                 keywords=[]))
 
         if isinstance(transformedNode.body[-1], Return):
-            transformedNode.body.insert(-1, after)
+            original_return = transformedNode.body[-1]
+            arg_list = [Constant(value=transformedNode.name), original_return.value]
+            new_return = Return(
+                value=Call(
+                    func=Attribute(
+                        value=Name(id='FunctionProfiler', ctx=Load()),
+                        attr='record_end',
+                        ctx=Load()
+                    ),
+                    args=arg_list,
+                    keywords=[]
+                )
+            )
+            transformedNode.body[-1] = new_return #Sobrescribimos el return original
         else:
             transformedNode.body.append(after)
         
