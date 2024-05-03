@@ -25,16 +25,18 @@ class CoverageTracer(StackInspector):
     def traceit(self, frame, event: str, arg):
         # Completa el codigo necesario
         if event == "line":
-            filename = frame.f_code.co_filename
+            function_name = frame.f_code.co_name
             lineno = frame.f_lineno
-            func_key = (filename, lineno)
+            func_key = (function_name, lineno)
 
-            # Evitamos rastrearnos a nosotros 
-            if func_key in self.executed_lines:
-                self.executed_lines[func_key].increaseFrequency()
-            else:
-                func_name = frame.f_code.co_name
-                self.executed_lines[func_key] = LineRecord(func_name, lineno)
+            # Evitamos rastrearnos a nosotros
+            # Codigo extraido de FunctionTracer
+            if not self.our_frame(frame) and not self.problematic_frame(frame): 
+                if func_key in self.executed_lines:
+                    self.executed_lines[func_key].increaseFrequency()
+                else:
+                    func_name = frame.f_code.co_name
+                    self.executed_lines[func_key] = LineRecord(func_name, lineno)
 
         return self.traceit
 
