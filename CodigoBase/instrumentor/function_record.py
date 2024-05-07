@@ -2,14 +2,14 @@ class FunctionRecord:
     def __init__(self, funName):
         self.functionName = funName
         self.frequency = 0
-        self.cacheable = None
+        self.cacheable = True
         self.callers = []
 
     def isCacheable(self):
         return self.cacheable
         
     def print_report(self):
-        print("{:<30} {:<10} {:<10} {}".format(self.functionName, 0, 0, []))
+        print("{:<30} {:<10} {:<10} {}".format(self.functionName, self.frequency, self.cacheable, self.callers))
 
     def __eq__(self, other):
         if isinstance(other, FunctionRecord):
@@ -23,3 +23,7 @@ class FunctionRecord:
         instance.cacheable = cacheable
         instance.callers = callers
         return instance
+    
+    def add_caller(self, caller):
+        if caller is not None and caller not in self.callers:
+            self.callers.append(caller)
