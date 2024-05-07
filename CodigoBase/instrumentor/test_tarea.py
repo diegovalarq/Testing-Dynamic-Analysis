@@ -27,7 +27,7 @@ class TestFunctionInstrumentor(unittest.TestCase):
                     'foo': FunctionRecord.new_instance_with('foo', 1, True, ['main']), 
                     'bar':FunctionRecord.new_instance_with('bar', 2, False, ['foo'])}
 
-        #self.print_expected_result(expected)
+        self.print_expected_result(expected)
 
         self.assertEqual(result, expected)
 
@@ -42,7 +42,7 @@ class TestFunctionInstrumentor(unittest.TestCase):
 
         expected = {'factorial': FunctionRecord.new_instance_with('factorial', 6, False, ['factorial'])}
 
-        #self.print_expected_result(expected)
+        self.print_expected_result(expected)
 
         self.assertEqual(result, expected)
 
